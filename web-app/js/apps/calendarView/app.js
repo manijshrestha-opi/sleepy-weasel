@@ -1,14 +1,16 @@
 ;
 (function() {
     'use strict';
-    var app = angular.module('calendarViewApp', ['ui.calendar']);
+    var app = angular.module('calendarViewApp', ['ui.calendar', 'firebase']);
 
-    app.controller('CalendarViewCtrl', function($scope) {
+    app.controller('CalendarViewCtrl', function($scope, $timeout, angularFire) {
+        var ref = new Firebase('https://opihackathon.firebaseIO.com/employees');
+        angularFire(ref.limit(15), $scope, "employees");
 
         $scope.events = [
             {   title: 'eat food',
-                start: new Date(),
-                end: new Date(new Date().getTime() + (48*60*60*1000))
+                start: $.fullCalendar.parseDate('2014-01-01'),
+                end: $.fullCalendar.parseDate('2014-01-04')
             }
         ];
 
@@ -27,6 +29,10 @@
 //                eventResize: $scope.alertOnResize
             }
         };
+
+        $timeout(function(){
+            $scope.myCalendar.fullCalendar('gotoDate', 2014, 0, 1) ;
+        });
         /* event sources array*/
         $scope.eventSources = [$scope.events];
     });

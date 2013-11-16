@@ -8,7 +8,7 @@
 <body>
 <div id="page-body" role="main" ng-app="calendarViewApp">
     <div ng-controller="CalendarViewCtrl">
-        <div ui-calendar="uiConfig.calendar" ng-model="eventSources">
+        <div ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="myCalendar">
 
         </div>
 
