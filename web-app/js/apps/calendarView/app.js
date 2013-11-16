@@ -3,40 +3,53 @@
     'use strict';
     var app = angular.module('calendarViewApp', ['ui.calendar', 'firebase']);
 
-    app.controller('CalendarViewCtrl', function($scope, $timeout, angularFire) {
+    app.service('EmployeeService', function(angularFire) {
         var emplQuery = new Firebase('https://opihackathon.firebaseio.com/employees');
+        return {
+            bindEmployees: function(scope, prop) {
+                angularFire(emplQuery, scope, prop);
+            }
+        };
+    });
+
+    app.service('ReservationService', function(angularFire) {
         var reservationQuery = new Firebase('https://opihackathon.firebaseio.com/bookingSeason/cabin/2014/summer/employeeReservation');
-        angularFire(emplQuery, $scope, "employees");
-        angularFire(reservationQuery, $scope, "reservations");
-        //$scope.employees = angularFireCollection(emplQuery, syncReservations);
-        //$scope.reservations = angularFireCollection(reservationQuery, syncReservations);
+        return {
+            bindReservations: function(scope, prop) {
+                angularFire(reservationQuery, scope, prop);
+            }
+        };
+    });
 
-        $scope.events = [
-        ];
+    app.controller('CalendarViewCtrl', function($scope, $timeout, angularFire, EmployeeService, ReservationService) {
+        $scope.employees = EmployeeService.bindEmployees($scope, 'employees');
+        $scope.reservations = ReservationService.bindReservations($scope, 'reservations');
+        $scope.events = [];
 
-        $scope.$watch("employees", asyncReservations);
-        $scope.$watch("reservations", asyncReservations);
-
-        function asyncReservations() {
-            $timeout(syncReservations);
-        }
+        $scope.$watch("employees", syncReservations);
+        $scope.$watch("reservations", syncReservations);
 
         function syncReservations() {
             if($scope.employees && $scope.reservations) {
                 $scope.events.length = 0;
-                var calendarReservations = [];
                 _.forOwn($scope.reservations, function(reservation, employeeId){
-                    //console.log("employeeId::" , employeeId);
                     var employee = $scope.employees[employeeId];
-                    //console.log("employees>>", employee);
-                    var event = {start: $.fullCalendar.parseDate(reservation.start), end: $.fullCalendar.parseDate(reservation.end), title: employee.firstName};
-                    $scope.events.push(event);
+                    if (employee) {
+                        var event = constructEvent(reservation, employee);
+                        $scope.events.push(event);
+                    } else {
+                        console.warn("Could not find employee with id:", employeeId);
+                    }
                 });
-                console.log("$scope.events", $scope.events);
-                //$scope.events.push(calendarReservations);
             }
+        }
 
-            console.log("calendarReservations: " , calendarReservations);
+        function constructEvent(reservation, employee) {
+            return {
+                    start: $.fullCalendar.parseDate(reservation.start),
+                    end: $.fullCalendar.parseDate(reservation.end),
+                    title: employee.firstName
+            }
         }
 
         $scope.uiConfig = {
