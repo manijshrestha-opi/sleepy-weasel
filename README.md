@@ -40,3 +40,4 @@ asdfasdf (most important requirement)
 - Authentication against OPI Google Account
 - Update users calendar when reservation is accepted/created
 
+Test update
