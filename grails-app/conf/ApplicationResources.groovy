@@ -31,7 +31,7 @@ modules = {
     }
 
     calendarViewApp {
-        dependsOn 'angularUiCalendar', 'ngfire'
+        dependsOn 'angularUiCalendar', 'ngfire', 'lodash'
         resource url: 'js/apps/calendarView/app.js'
     }
 }

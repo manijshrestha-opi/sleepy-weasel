@@ -12,6 +12,14 @@
 
         </div>
 
+        <ul>
+           <li ng-repeat="employee in employees">{{employee.firstName}}</li>
+        </ul>
+
+        <ul>
+            <li ng-repeat="reservation in reservations">{{reservation.start}}</li>
+        </ul>
+
     </div>
 </div>
 </body>

@@ -4,15 +4,40 @@
     var app = angular.module('calendarViewApp', ['ui.calendar', 'firebase']);
 
     app.controller('CalendarViewCtrl', function($scope, $timeout, angularFire) {
-        var ref = new Firebase('https://opihackathon.firebaseIO.com/employees');
-        angularFire(ref.limit(15), $scope, "employees");
+        var emplQuery = new Firebase('https://opihackathon.firebaseio.com/employees');
+        var reservationQuery = new Firebase('https://opihackathon.firebaseio.com/bookingSeason/cabin/2014/summer/employeeReservation');
+        angularFire(emplQuery, $scope, "employees");
+        angularFire(reservationQuery, $scope, "reservations");
+        //$scope.employees = angularFireCollection(emplQuery, syncReservations);
+        //$scope.reservations = angularFireCollection(reservationQuery, syncReservations);
 
         $scope.events = [
-            {   title: 'eat food',
-                start: $.fullCalendar.parseDate('2014-01-01'),
-                end: $.fullCalendar.parseDate('2014-01-04')
-            }
         ];
+
+        $scope.$watch("employees", asyncReservations);
+        $scope.$watch("reservations", asyncReservations);
+
+        function asyncReservations() {
+            $timeout(syncReservations);
+        }
+
+        function syncReservations() {
+            if($scope.employees && $scope.reservations) {
+                $scope.events.length = 0;
+                var calendarReservations = [];
+                _.forOwn($scope.reservations, function(reservation, employeeId){
+                    //console.log("employeeId::" , employeeId);
+                    var employee = $scope.employees[employeeId];
+                    //console.log("employees>>", employee);
+                    var event = {start: $.fullCalendar.parseDate(reservation.start), end: $.fullCalendar.parseDate(reservation.end), title: employee.firstName};
+                    $scope.events.push(event);
+                });
+                console.log("$scope.events", $scope.events);
+                //$scope.events.push(calendarReservations);
+            }
+
+            console.log("calendarReservations: " , calendarReservations);
+        }
 
         $scope.uiConfig = {
             calendar:{
