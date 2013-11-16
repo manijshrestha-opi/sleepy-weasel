@@ -1,0 +1,15 @@
+{
+    "name": "vacation-calendar",
+    "version": "0.1.0",
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/objectpartners/sleepy-weasel"
+    },
+    "dependencies": {
+        "angular": "1.2.0",
+        "jquery": "2.0.3",
+        "fullcalendar": "1.6.4",
+        "lodash": "2.3.0"
+    }
+}
+
