@@ -21,5 +21,6 @@ lib/build
 lib/compile
 lib/runtime
 lib/test
+bower_components
 test-*
 ~$*
