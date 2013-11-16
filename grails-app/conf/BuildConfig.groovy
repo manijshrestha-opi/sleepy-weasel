@@ -74,6 +74,8 @@ grails.project.dependency.resolution = {
 
         compile ':spring-security-core:2.0-RC2'
         compile ":spring-security-openid:2.0-RC2"
+        compile ":rest-client-builder:2.0.0"
+        compile ":joda-time:1.4"
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0.1"

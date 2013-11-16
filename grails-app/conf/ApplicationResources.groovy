@@ -13,8 +13,12 @@ modules = {
         resource url:'js/libs/angular-fire/angularfire.js'
     }
 
+    jqueryUi {
+        resource url: 'js/libs/jquery-ui/ui/jquery-ui.js'
+    }
+
     angularUi {
-        dependsOn 'jquery', 'angular'
+        dependsOn 'jquery', 'angular', 'jqueryUi'
         resource url: 'js/libs/angular-ui/build/angular-ui.js'
         resource url: 'js/libs/angular-ui/build/angular-ui.css'
     }

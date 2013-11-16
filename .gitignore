@@ -24,3 +24,5 @@ lib/test
 bower_components
 test-*
 ~$*
+.project
+.classpath

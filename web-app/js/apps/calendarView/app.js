@@ -52,17 +52,21 @@
             }
         }
 
+        $scope.modifyReservation = function(evt, jsEvent) {
+            console.log('modifying reservation', evt);
+        };
+
         $scope.uiConfig = {
             calendar:{
-                height: 450,
+                height: 850,
                 editable: true,
                 header:{
                     left: 'month basicWeek basicDay agendaWeek agendaDay',
                     center: 'title',
                     right: 'today prev,next'
-                }
-//                ,
-//                dayClick: $scope.alertEventOnClick,
+                },
+                eventClick: $scope.modifyReservation,
+                dayClick: $scope.modifyReservation
 //                eventDrop: $scope.alertOnDrop,
 //                eventResize: $scope.alertOnResize
             }

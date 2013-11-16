@@ -2,16 +2,11 @@
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
 
-// grails.config.locations = [ "classpath:${appName}-config.properties",
-//                             "classpath:${appName}-config.groovy",
-//                             "file:${userHome}/.grails/${appName}-config.properties",
-//                             "file:${userHome}/.grails/${appName}-config.groovy"]
+def configLocation = System.getenv('CALENDAR_CONFIG_LOCATION') ?: System.getenv('grails.work.dir') ?: "${userHome}/.grails"
+def configFilePath = "file:$configLocation/${appName}-config.groovy"
+grails.config.locations = [configFilePath]
 
-// if (System.properties["${appName}.config.location"]) {
-//    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
-// }
-
-grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
+grails.project.groupId = com.objectpartners.calendar // change this to alter the default package name and Maven publishing destination
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
@@ -126,6 +121,9 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/**/js/**':                      ['permitAll'],
 	'/**/css/**':                     ['permitAll'],
 	'/**/images/**':                  ['permitAll'],
-	'/**/favicon.ico':                ['permitAll']
+	'/**/favicon.ico':                ['permitAll'],
+    '/**':                            ['permitAll']
 ]
+
+firebase.baseurl = "https://opihackathon.firebaseio.com"
 
